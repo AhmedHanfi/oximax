@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Acceuil index{% endblock %}
+
+{% block body %}
+    <h1>Acceuil index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Mail</th>
+                <th>Telephone</th>
+                <th>Adress</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for acceuil in acceuils %}
+            <tr>
+                <td>{{ acceuil.id }}</td>
+                <td>{{ acceuil.Nom }}</td>
+                <td>{{ acceuil.Prenom }}</td>
+                <td>{{ acceuil.mail }}</td>
+                <td>{{ acceuil.telephone }}</td>
+                <td>{{ acceuil.Adress }}</td>
+                <td>
+                    <a href="{{ path('app_acceuil_show', {'id': acceuil.id}) }}">show</a>
+                    <a href="{{ path('app_acceuil_edit', {'id': acceuil.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_acceuil_new') }}">Create new</a>
+{% endblock %}

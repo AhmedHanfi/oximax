@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}OxiMax{% endblock %}
+		</title>
+		<link
+		rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+	</head>
+	<body>
+
+		{% block navBar %}
+			<nav class="navbar navbar-dark bg-dark d-flex px-3">
+				<a class="navbar-brand" href="/">OxiMax</a>
+				<ul class="navbar-nav flex-row">
+					{% if app.user %}
+						<li class="nav-item p-2 mr-auto">
+							<a class="nav-link" href="{{ path('app_user_index') }}">Users</a>
+						</li>
+						<li class="nav-item p-2">
+							<a class="nav-link" href="{{ path('app_docteur_index') }}">Doctors</a>
+						</li>
+						<li class="nav-item p-2 mr-0 ml-auto">
+							<a class="nav-link" href="{{ path('app_logout') }}">LogOut</a>
+						</li>
+						{% else %}
+							<li class="nav-item mr-0 ml-auto">
+								<a class="nav-link" href="{{ path('app_login') }}">LogIn</a>
+							</li>
+					{% endif %}
+				</ul>
+			</nav>
+		{% endblock %}
+
+		{% if app.user %}
+			<h3>Welcome, {{ app.user.username }}!</h3>
+
+			{% if app.user.getDocteur %}
+				<table class="table">
+					<thead>
+						<tr>
+						<th scope="col">Nom</th>
+						<th scope="col">Prenom</th>
+						<th scope="col">mail</th>
+						<th scope="col">Role</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{ app.user.getDocteur.prenom }}</td>
+							<td>{{ app.user.getDocteur.nom }}</td>
+							<td>{{ app.user.getDocteur.mail }}</td>
+							<td>{{ app.user.roles[0] }}</td>
+						</tr>
+					</tbody>
+				</table>
+			{% endif %}
+
+			{% if app.user.getAcceuil %}
+				{{ 'Mohsen ya mohsen, to tororo' }}
+			{% endif %}
+		{% endif %}
+			
+		{% block body %}
+			<h1>Welcome to OxiMax!<h1>
+			
+			{% if app.user %}
+				<ul>
+                	<li><a href="{{ path('app_user_index') }}">Manage Users</a> </li>
+                	<li><a href="{{ path('app_docteur_index') }}">Add Doctors</a> </li>
+            	</ul>
+			{% endif %}
+            
+		{% endblock %}
+			
+	</body>
+</html>

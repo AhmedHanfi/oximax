@@ -1,0 +1,43 @@
+# Use the official PHP 8.0 image
+FROM php:8.1-cli
+
+# Set the working directory
+WORKDIR /var/www/html
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    libicu-dev \
+    libonig-dev \
+    libzip-dev \
+    zip \
+    && docker-php-ext-install \
+    pdo_mysql \
+    intl \
+    mbstring \
+    zip
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Copy the project files to the container
+COPY . .
+
+# Install application dependencies including require-dev packages
+RUN composer install --no-interaction --optimize-autoloader
+
+# Install and configure Nginx
+RUN apt-get install -y nginx
+
+# Remove default Nginx configuration
+RUN rm /etc/nginx/sites-available/default
+
+# Copy custom Nginx configuration
+COPY docker/nginx/default.conf /etc/nginx/sites-available/default
+
+# Expose port 80 for Nginx
+EXPOSE 80
+
+# Start Nginx and PHP-FPM
+CMD service nginx start && php-fpm

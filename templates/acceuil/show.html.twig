@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Acceuil{% endblock %}
+
+{% block body %}
+    <h1>Acceuil</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ acceuil.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ acceuil.Nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ acceuil.Prenom }}</td>
+            </tr>
+            <tr>
+                <th>Mail</th>
+                <td>{{ acceuil.mail }}</td>
+            </tr>
+            <tr>
+                <th>Telephone</th>
+                <td>{{ acceuil.telephone }}</td>
+            </tr>
+            <tr>
+                <th>Adress</th>
+                <td>{{ acceuil.Adress }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_acceuil_index') }}">back to list</a>
+
+    <a href="{{ path('app_acceuil_edit', {'id': acceuil.id}) }}">edit</a>
+
+    {{ include('acceuil/_delete_form.html.twig') }}
+{% endblock %}
