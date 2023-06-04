@@ -18,7 +18,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'json')]
     private array $roles = [];
 
     /**
@@ -26,6 +26,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Docteur $docteur = null;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Acceuil $acceuil = null;
 
     public function getId(): ?int
     {
@@ -59,11 +65,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
+        return array_unique($this->roles);
     }
 
     public function setRoles(array $roles): self
@@ -72,7 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
+    
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -95,5 +97,49 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getDocteur(): ?Docteur
+    {
+        return $this->docteur;
+    }
+
+    public function setDocteur(?Docteur $docteur): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($docteur === null && $this->docteur !== null) {
+            $this->docteur->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($docteur !== null && $docteur->getUser() !== $this) {
+            $docteur->setUser($this);
+        }
+
+        $this->docteur = $docteur;
+
+        return $this;
+    }
+
+    public function getAcceuil(): ?Acceuil
+    {
+        return $this->acceuil;
+    }
+
+    public function setAcceuil(?Acceuil $acceuil): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($acceuil === null && $this->acceuil !== null) {
+            $this->acceuil->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($acceuil !== null && $acceuil->getUser() !== $this) {
+            $acceuil->setUser($this);
+        }
+
+        $this->acceuil = $acceuil;
+
+        return $this;
     }
 }

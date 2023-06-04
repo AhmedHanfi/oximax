@@ -1,0 +1,26 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./docker/apache/default.conf:/etc/apache2/sites-available/000-default.conf
+      - ./:/var/www/html
+    extra_hosts:
+      - "localhost:127.0.0.1"
+    ports:
+      - 8000:80
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: oximax
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:

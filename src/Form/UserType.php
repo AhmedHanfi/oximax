@@ -4,12 +4,11 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Callback;
-use Symfony\Component\Validator\Constraints\Compound;
+use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserType extends AbstractType
 {
@@ -17,30 +16,27 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('roles', ChoiceType::class, [
-                'choices' => [
-                    'User' => 'ROLE_USER',
-                    'Admin' => 'ROLE_ADMIN'
-                ],
-                'compound' => true
-            ])
-            ->get('roles')
-            ->addModelTransformer(new CallbackTransformer(
-                function($rolesAsArray){
-                    return count($rolesAsArray) ? $rolesAsArray[0] : null;
-                },
-                function($rolesAsString){
-                    return [$rolesAsString];
-                }
-            ))
-            ->add('password')
-        ;
+            // ->add('roles', ChoiceType::class, [
+            //     'label' => 'Roles',
+            //     'choices' => [
+            //         'Admin' => 'ROLE_ADMIN',
+            //         'User' => 'ROLE_USER',
+            //     ],
+            //     'expanded' => true,
+            //     'multiple' => $options['multiple'],
+            //     'constraints' => [
+            //         new NotBlank(),
+            //         new Choice(['choices' => ['ROLE_ADMIN', 'ROLE_USER'], 'multiple' => $options['multiple']]),
+            //     ],
+            // ])
+            ->add('password');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'multiple' => true,
         ]);
     }
 }

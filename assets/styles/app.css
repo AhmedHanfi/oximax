@@ -1,3 +1,11 @@
+@import "/node_modules/bootstrap/dist/css/bootstrap.css";
+@import "customCss.css";
+/* @import "~bootstrap/scss/bootstrap"; */
+
 body {
-    background-color: lightgray;
+    background-color: white;
+    margin: 0;
+    height: 100%;
+    width: 100%;
 }
+

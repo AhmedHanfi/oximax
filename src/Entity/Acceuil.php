@@ -28,6 +28,9 @@ class Acceuil
     #[ORM\Column(length: 255)]
     private ?string $Adress = null;
 
+    #[ORM\OneToOne(inversedBy: 'acceuil', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,6 +92,18 @@ class Acceuil
     public function setAdress(string $Adress): self
     {
         $this->Adress = $Adress;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

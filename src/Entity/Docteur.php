@@ -34,8 +34,8 @@ class Docteur
     #[ORM\Column(length: 255)]
     private ?string $cabinet = null;
 
-    #[ORM\ManyToOne(inversedBy: 'userid')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\OneToOne(inversedBy: 'docteur', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -122,6 +122,18 @@ class Docteur
     public function setCabinet(string $cabinet): self
     {
         $this->cabinet = $cabinet;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
