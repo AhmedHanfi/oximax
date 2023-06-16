@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/responsable')]
 class ResponsableController extends AbstractController
 {
+    //
     #[Route('/', name: 'app_responsable_index', methods: ['GET'])]
     public function index(ResponsableRepository $responsableRepository): Response
     {
