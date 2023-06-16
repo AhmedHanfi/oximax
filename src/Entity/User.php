@@ -32,6 +32,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Acceuil $acceuil = null;
+    
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Responsable $responsable = null;
 
     public function getId(): ?int
     {
@@ -139,6 +142,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->acceuil = $acceuil;
+
+        return $this;
+    }
+    
+    public function getResponsable(): ?Responsable
+    {
+        return $this->acceuil;
+    }
+
+    public function setResponsable(?Responsable $responsable): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($responsable === null && $this->responsable !== null) {
+            $this->responsable->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($responsable !== null && $responsable->getUser() !== $this) {
+            $responsable->setUser($this);
+        }
+
+        $this->acceuil = $responsable;
 
         return $this;
     }

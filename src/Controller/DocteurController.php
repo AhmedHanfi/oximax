@@ -81,7 +81,6 @@ class DocteurController extends AbstractController
             $docteurRepository->save($docteur, true);
 
             if ($user) {
-                // Create a new User entity
                 $user->setUsername($form->get('user')->get('username')->getData());
 
                 $plainPassword = $form->get('user')->get('password')->getData();
