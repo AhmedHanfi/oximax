@@ -13,11 +13,11 @@ class ResponsableType extends AbstractType
     {
         $builder
             ->add('Nom')
-            ->add('Mail')
             ->add('Prenom')
+            ->add('Mail')
             ->add('telephone')
             ->add('adress')
-            ->add('user')
+            ->add('user', UserType::class)
         ;
     }
 

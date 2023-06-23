@@ -163,7 +163,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $responsable->setUser($this);
         }
 
-        $this->acceuil = $responsable;
+        $this->responsable = $responsable;
 
         return $this;
     }

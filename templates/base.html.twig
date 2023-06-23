@@ -24,11 +24,9 @@
 				<ul class="navbar-nav flex-row">
 					{% if app.user %}
 						<li class="nav-item p-2 mr-auto">
-							<a class="nav-link" href="{{ path('app_user_index') }}">Users</a>
+							<a class="nav-link" href="{{ path('index') }}">Actions</a>
 						</li>
-						<li class="nav-item p-2">
-							<a class="nav-link" href="{{ path('app_docteur_index') }}">Doctors</a>
-						</li>
+						
 						<li class="nav-item p-2 mr-0 ml-auto">
 							<a class="nav-link" href="{{ path('app_logout') }}">LogOut</a>
 						</li>
@@ -65,22 +63,35 @@
 				</table>
 			{% endif %}
 
-			{% if app.user.getAcceuil %}
-				{{ 'Mohsen ya mohsen, to tororo' }}
-			{% endif %}
+			
 		{% endif %}
 			
 		{% block body %}
 			<h1>Welcome to OxiMax!<h1>
 			
-			{% if app.user %}
+			{% if is_granted('ROLE_ADMIN') %}
 				<ul>
-                	<li><a href="{{ path('app_user_index') }}">Manage Users</a> </li>
-                	<li><a href="{{ path('app_docteur_index') }}">Add Doctors</a> </li>
+                	<li><a href="{{ path('app_user_index') }}">Gérer Admins</a> </li>
+                	<li><a href="{{ path('app_responsable_index') }}">Gérer Responsables</a> </li>
+					<li><a href="{{ path('app_docteur_index') }}">Gérer docteurs</a> </li>
+					<li><a href="{{ path('app_patient_index') }}">Gérer patients</a> </li>
+
             	</ul>
 			{% endif %}
+			{% if is_granted('ROLE_RESPONSABLE') %}
+            	{% include 'responsable/page_responsable.html.twig' %}	
+			{% endif %}
+			{% if is_granted('ROLE_DOCTOR') %}
+				{% include 'docteur/page_docteur.html.twig' %}	
+			{% endif %}
+			
+            {% if is_granted('ROLE_RESPONSABLE') %}
+				{% include 'responsable/page_responsable.html.twig' %}	
+			{% endif %}
+			{% if is_granted('ROLE_ACCEUIL') %}
+				{% include 'acceuil/page_acceuil.html.twig' %}	
+			{% endif %}
 
-			<iframe style="width: 100%; border: 1 black solid;" frameborder='1' height='620' src="http://192.168.216.91/">
             
 		{% endblock %}
 			

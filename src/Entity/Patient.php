@@ -38,6 +38,9 @@ class Patient
     #[ORM\Column(length: 255)]
     private ?string $Mail = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $etat_patient = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -135,6 +138,18 @@ class Patient
     public function setMail(string $Mail): self
     {
         $this->Mail = $Mail;
+
+        return $this;
+    }
+
+    public function getEtatPatient(): ?string
+    {
+        return $this->etat_patient;
+    }
+
+    public function setEtatPatient(?string $etat_patient): self
+    {
+        $this->etat_patient = $etat_patient;
 
         return $this;
     }
