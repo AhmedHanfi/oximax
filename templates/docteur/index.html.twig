@@ -4,44 +4,45 @@
 
 {% block body %}
     <h1>Docteur index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Specialite</th>
-                <th>Telephone</th>
-                <th>Mail</th>
-                <th>Adress</th>
-                <th>Cabinet</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for docteur in docteurs %}
-            <tr>
-                <td>{{ docteur.id }}</td>
-                <td>{{ docteur.nom }}</td>
-                <td>{{ docteur.prenom }}</td>
-                <td>{{ docteur.specialite }}</td>
-                <td>{{ docteur.telephone }}</td>
-                <td>{{ docteur.mail }}</td>
-                <td>{{ docteur.adress }}</td>
-                <td>{{ docteur.cabinet }}</td>
-                <td>
-                    <a href="{{ path('app_docteur_show', {'id': docteur.id}) }}">show</a>
-                    <a href="{{ path('app_docteur_edit', {'id': docteur.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+        <table class="table" id="datatable" >
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Specialite</th>
+                    <th>Telephone</th>
+                    <th>Mail</th>
+                    <th>Adress</th>
+                    <th>Cabinet</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for docteur in docteurs %}
+                <tr>
+                    <td>{{ docteur.id }}</td>
+                    <td>{{ docteur.nom }}</td>
+                    <td>{{ docteur.prenom }}</td>
+                    <td>{{ docteur.specialite }}</td>
+                    <td>{{ docteur.telephone }}</td>
+                    <td>{{ docteur.mail }}</td>
+                    <td>{{ docteur.adress }}</td>
+                    <td>{{ docteur.cabinet }}</td>
+                    <td>
+                        <a href="{{ path('app_docteur_show', {'id': docteur.id}) }}">show</a>
+                        <a href="{{ path('app_docteur_edit', {'id': docteur.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     <a href="{{ path('app_docteur_new') }}">Create new</a>
 {% endblock %}
