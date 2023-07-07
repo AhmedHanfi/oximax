@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DocteurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DocteurRepository::class)]
@@ -36,6 +38,14 @@ class Docteur
 
     #[ORM\OneToOne(inversedBy: 'docteur', cascade: ['persist', 'remove'])]
     private ?User $user = null;
+
+    #[ORM\ManyToMany(targetEntity: Patient::class, inversedBy: 'docteurs')]
+    private Collection $patients_ids;
+
+    public function __construct()
+    {
+        $this->patients_ids = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -134,6 +144,30 @@ class Docteur
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Patient>
+     */
+    public function getPatientsIds(): Collection
+    {
+        return $this->patients_ids;
+    }
+
+    public function addPatientsId(Patient $patientsId): self
+    {
+        if (!$this->patients_ids->contains($patientsId)) {
+            $this->patients_ids->add($patientsId);
+        }
+
+        return $this;
+    }
+
+    public function removePatientsId(Patient $patientsId): self
+    {
+        $this->patients_ids->removeElement($patientsId);
 
         return $this;
     }

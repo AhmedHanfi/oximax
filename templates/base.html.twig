@@ -64,12 +64,12 @@
 				</table>
 			{% endif %}
 
-			
+
 		{% endif %}
 			
 		{% block body %}
 			<h1>Welcome to OxiMax!<h1>
-			
+
 			{% if is_granted('ROLE_ADMIN') %}
 				<ul>
                 	<li><a href="{{ path('app_user_index') }}">Gérer Admins</a> </li>
@@ -84,10 +84,6 @@
 			{% endif %}
 			{% if is_granted('ROLE_DOCTOR') %}
 				{% include 'docteur/page_docteur.html.twig' %}	
-			{% endif %}
-			
-            {% if is_granted('ROLE_RESPONSABLE') %}
-				{% include 'responsable/page_responsable.html.twig' %}	
 			{% endif %}
 			{% if is_granted('ROLE_ACCEUIL') %}
 				{% include 'acceuil/page_acceuil.html.twig' %}	

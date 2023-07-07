@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PatientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,6 +42,14 @@ class Patient
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $etat_patient = null;
+
+    #[ORM\ManyToMany(targetEntity: Docteur::class, mappedBy: 'patients_ids')]
+    private Collection $docteurs;
+
+    public function __construct()
+    {
+        $this->docteurs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -150,6 +160,33 @@ class Patient
     public function setEtatPatient(?string $etat_patient): self
     {
         $this->etat_patient = $etat_patient;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Docteur>
+     */
+    public function getDocteurs(): Collection
+    {
+        return $this->docteurs;
+    }
+
+    public function addDocteur(Docteur $docteur): self
+    {
+        if (!$this->docteurs->contains($docteur)) {
+            $this->docteurs->add($docteur);
+            $docteur->addPatientsId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocteur(Docteur $docteur): self
+    {
+        if ($this->docteurs->removeElement($docteur)) {
+            $docteur->removePatientsId($this);
+        }
 
         return $this;
     }
