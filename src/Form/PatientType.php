@@ -2,9 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\Docteur;
 use App\Entity\Patient;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,6 +25,12 @@ class PatientType extends AbstractType
             ->add('Adress')
             ->add('Mail')
             ->add('etat_patient', TextType::class)
+            ->add('docteurs', EntityType::class, [
+                'class' => Docteur::class,
+                'choice_label' => 'nom',
+                'multiple' => true,
+                'expanded' => false,
+            ]);
         ;
     }
 

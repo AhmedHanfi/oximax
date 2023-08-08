@@ -55,6 +55,7 @@ class PatientController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //$patient->addDocteur($form->get('docteurs')->getData());
             $patientRepository->save($patient, true);
 
             return $this->redirectToRoute('app_patient_index', [], Response::HTTP_SEE_OTHER);
