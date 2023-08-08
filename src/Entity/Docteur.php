@@ -39,13 +39,14 @@ class Docteur
     #[ORM\OneToOne(inversedBy: 'docteur', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
-    #[ORM\ManyToMany(targetEntity: Patient::class, inversedBy: 'docteurs')]
-    private Collection $patients_ids;
+    #[ORM\OneToMany(mappedBy: 'Docteur', targetEntity: DocteurPatientLigne::class)]
+    private Collection $docteurPatientLignes;
 
     public function __construct()
     {
-        $this->patients_ids = new ArrayCollection();
+        $this->docteurPatientLignes = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -149,25 +150,31 @@ class Docteur
     }
 
     /**
-     * @return Collection<int, Patient>
+     * @return Collection<int, DocteurPatientLigne>
      */
-    public function getPatientsIds(): Collection
+    public function getDocteurPatientLignes(): Collection
     {
-        return $this->patients_ids;
+        return $this->docteurPatientLignes;
     }
 
-    public function addPatientsId(Patient $patientsId): self
+    public function addDocteurPatientLigne(DocteurPatientLigne $docteurPatientLigne): self
     {
-        if (!$this->patients_ids->contains($patientsId)) {
-            $this->patients_ids->add($patientsId);
+        if (!$this->docteurPatientLignes->contains($docteurPatientLigne)) {
+            $this->docteurPatientLignes->add($docteurPatientLigne);
+            $docteurPatientLigne->setDocteur($this);
         }
 
         return $this;
     }
 
-    public function removePatientsId(Patient $patientsId): self
+    public function removeDocteurPatientLigne(DocteurPatientLigne $docteurPatientLigne): self
     {
-        $this->patients_ids->removeElement($patientsId);
+        if ($this->docteurPatientLignes->removeElement($docteurPatientLigne)) {
+            // set the owning side to null (unless already changed)
+            if ($docteurPatientLigne->getDocteur() === $this) {
+                $docteurPatientLigne->setDocteur(null);
+            }
+        }
 
         return $this;
     }
