@@ -47,6 +47,17 @@
                 <th>Etat</th>
                 <td>{{ patient.EtatPatient }}</td> 
             </tr>
+            <tr>
+                <th>Docteur</th>
+                <td>
+                    {% for docteurPatientLigne in patient.docteurPatientLignes %}
+                        {{ docteurPatientLigne.Docteur.nom }}, <br>
+                    {% else %}
+                        No doctors assigned.
+                    {% endfor %}
+                </td>
+            </tr>
+             
         </tbody>
     </table>
 

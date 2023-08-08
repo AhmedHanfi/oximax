@@ -43,13 +43,14 @@ class Patient
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $etat_patient = null;
 
-    #[ORM\ManyToMany(targetEntity: Docteur::class, mappedBy: 'patients_ids')]
-    private Collection $docteurs;
+    #[ORM\OneToMany(mappedBy: 'Patient', targetEntity: DocteurPatientLigne::class)]
+    private Collection $docteurPatientLignes;
 
     public function __construct()
     {
-        $this->docteurs = new ArrayCollection();
+        $this->docteurPatientLignes = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -165,29 +166,34 @@ class Patient
     }
 
     /**
-     * @return Collection<int, Docteur>
+     * @return Collection<int, DocteurPatientLigne>
      */
-    public function getDocteurs(): Collection
+    public function getDocteurPatientLignes(): Collection
     {
-        return $this->docteurs;
+        return $this->docteurPatientLignes;
     }
 
-    public function addDocteur(Docteur $docteur): self
+    public function addDocteurPatientLigne(DocteurPatientLigne $docteurPatientLigne): self
     {
-        if (!$this->docteurs->contains($docteur)) {
-            $this->docteurs->add($docteur);
-            $docteur->addPatientsId($this);
+        if (!$this->docteurPatientLignes->contains($docteurPatientLigne)) {
+            $this->docteurPatientLignes->add($docteurPatientLigne);
+            $docteurPatientLigne->setPatient($this);
         }
 
         return $this;
     }
 
-    public function removeDocteur(Docteur $docteur): self
+    public function removeDocteurPatientLigne(DocteurPatientLigne $docteurPatientLigne): self
     {
-        if ($this->docteurs->removeElement($docteur)) {
-            $docteur->removePatientsId($this);
+        if ($this->docteurPatientLignes->removeElement($docteurPatientLigne)) {
+            // set the owning side to null (unless already changed)
+            if ($docteurPatientLigne->getPatient() === $this) {
+                $docteurPatientLigne->setPatient(null);
+            }
         }
 
         return $this;
     }
+
+
 }

@@ -2,13 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Docteur;
 use App\Entity\Patient;
+use App\Entity\DocteurPatientLigne;
 use App\Form\PatientType;
+use App\Repository\DocteurRepository;
 use App\Repository\PatientRepository;
+use App\Repository\DocteurPatientLigneRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
 
 #[Route('/patient')]
 class PatientController extends AbstractController
@@ -22,9 +27,10 @@ class PatientController extends AbstractController
     }
 
     #[Route('/new', name: 'app_patient_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, PatientRepository $patientRepository): Response
+    public function new(Request $request, PatientRepository $patientRepository, DocteurRepository $docteurRepository): Response
     {
         $patient = new Patient();
+        $docteur = $docteurRepository->findAll();
         $form = $this->createForm(PatientType::class, $patient);
         $form->handleRequest($request);
 
@@ -37,6 +43,7 @@ class PatientController extends AbstractController
         return $this->renderForm('patient/new.html.twig', [
             'patient' => $patient,
             'form' => $form,
+            'docteurs' => $docteur,
         ]);
     }
 
@@ -49,19 +56,45 @@ class PatientController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_patient_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Patient $patient, PatientRepository $patientRepository): Response
+    public function edit(Request $request, Patient $patient, EntityManagerInterface $entityManager, PatientRepository $patientRepository, DocteurRepository $docteurRepository, DocteurPatientLigneRepository $reoLigDocpatient): Response
     {
         $form = $this->createForm(PatientType::class, $patient);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // $doc = $docteurRepository->findOneBy(array('id'=>$form->get('docteurs')->getData()[0]->getId()));
+            // $patient->addDocteur($doc);
+
+            $ligDocpatient = $reoLigDocpatient->findBy([
+                'Patient' => $patient,
+            ]);
+
+            foreach ($ligDocpatient as $docteurLigne) {
+                $entityManager->remove($docteurLigne);
+            }
+
+            $entityManager->flush();
+
             $patientRepository->save($patient, true);
+            $selectedDoctors = $request->get('doctors', []);
+            
+            foreach($selectedDoctors as $doctorId){
+                $doc = $docteurRepository->find($doctorId);
+                $docLig = new DocteurPatientLigne();
+                $docLig->setDocteur($doc);
+                $docLig->setPatient($patient);
+                $reoLigDocpatient->save($docLig);
+            }
+
+            $entityManager->flush();
 
             return $this->redirectToRoute('app_patient_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('patient/edit.html.twig', [
             'patient' => $patient,
+            'docteurs' => $docteurRepository->findAll(),
             'form' => $form,
         ]);
     }
