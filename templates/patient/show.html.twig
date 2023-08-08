@@ -45,7 +45,7 @@
             </tr>
             <tr>
                 <th>Etat</th>
-                <td>{{ patient.EtatPatient }}</td> 
+                <td>{{ patient.EtatPatient }}</td>
             </tr>
             <tr>
                 <th>Docteur</th>
@@ -68,6 +68,6 @@
     {{ include('patient/_delete_form.html.twig') }}
 
             {% if is_granted('ROLE_DOCTOR') %}
-				<iframe style="width: 100%; border: 1 black solid;" frameborder='1' height='620' src="http://192.168.216.100/">
+				<iframe style="width: 100%; border: 1px black solid;" frameborder='1' height='620' src="http://192.168.216.100/">
 			{% endif %}
 {% endblock %}

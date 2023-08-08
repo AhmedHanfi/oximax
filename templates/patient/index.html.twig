@@ -35,14 +35,6 @@
                 <td>{{ patient.Adress }}</td>
                 <td>{{ patient.Mail }}</td>
                 <td>{{ patient.EtatPatient }}</td>
-                
-                <td>
-                    {% for docteurPatientLigne in patient.docteurPatientLignes %}
-                        {{ docteurPatientLigne.Docteur.nom }}, <br>
-                    {% else %}
-                        No doctors assigned.
-                    {% endfor %}
-                </td>
                 <td>
                     <a href="{{ path('app_patient_show', {'id': patient.id}) }}">show</a>
                     <a href="{{ path('app_patient_edit', {'id': patient.id}) }}">edit</a>
