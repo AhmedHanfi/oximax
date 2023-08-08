@@ -2,9 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Docteur;
 use App\Entity\Patient;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -22,7 +20,7 @@ class PatientType extends AbstractType
         $builder
             ->add('date_naissance', DateType::class, [
                 'widget' => 'single_text',
-                'html5' => false,
+                'html5' => true,
                 'format' => 'yyyy-MM-dd',
                 'attr' => [
                     'class' => 'form-control mb-2',

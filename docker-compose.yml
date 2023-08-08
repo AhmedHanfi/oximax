@@ -6,7 +6,10 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./docker/apache/default.conf:/etc/apache2/sites-available/000-default.conf
-      - ./:/var/www/html
+      - ./:/var/www/html:cached
+      - var:/var/www/html/var
+      - vendor:/var/www/html/vendor
+
     extra_hosts:
       - "localhost:127.0.0.1"
     ports:
@@ -39,3 +42,5 @@ services:
 
 volumes:
   db-data:
+  var:  # Define the "var" volume
+  vendor:  # Define the "vendor" volume
