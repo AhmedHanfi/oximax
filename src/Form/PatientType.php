@@ -20,7 +20,7 @@ class PatientType extends AbstractType
         $builder
             ->add('date_naissance', DateType::class, [
                 'widget' => 'single_text',
-                'html5' => false,
+                'html5' => true,
                 'format' => 'yyyy-MM-dd',
                 'attr' => [
                     'class' => 'form-control mb-2',
