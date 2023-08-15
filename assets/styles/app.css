@@ -1,5 +1,5 @@
 @import "/node_modules/bootstrap/dist/css/bootstrap.css";
-@import "customCss.css";
+
 /* @import "~bootstrap/scss/bootstrap"; */
 
 body {
@@ -9,3 +9,4 @@ body {
     width: 100%;
 }
 
+@import "customCss.css";
