@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Patient</h1>
-
+    <button onClick="print()">print</button>
     <table class="table" id="datatable">
         <tbody>
             <tr>
@@ -70,4 +70,9 @@
             {% if is_granted('ROLE_DOCTOR') %}
 				<iframe style="width: 100%; border: 1px black solid;" frameborder='1' height='620' src="http://192.168.216.100/">
 			{% endif %}
+    <script>
+    function print(){
+        window.print();
+    }
+  </script>
 {% endblock %}

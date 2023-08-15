@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Docteur;
 use App\Entity\Patient;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -26,17 +28,18 @@ class PatientType extends AbstractType
                     'class' => 'form-control mb-2',
                 ],
             ])
-            ->add('telephone', TelType::class, [
-                'attr' => [
-                    'class' => 'form-control mb-2',
-                ],
-            ])
+            
             ->add('Nom', TextType::class, [
                 'attr' => [
                     'class' => 'form-control mb-2',
                 ],
             ])
             ->add('Prenom', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control mb-2',
+                ],
+            ])
+            ->add('telephone', TelType::class, [
                 'attr' => [
                     'class' => 'form-control mb-2',
                 ],
@@ -70,7 +73,9 @@ class PatientType extends AbstractType
                 'attr' => [
                     'class' => 'form-control mb-2',
                 ],
-            ]);
+            ])
+            
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

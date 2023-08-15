@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Patient index</h1>
-
+    <button id="printButton">print</button>
     <table class="table"  id="datatable">
         <thead>
             <tr>
@@ -56,4 +56,5 @@
     </table>
 
     <a href="{{ path('app_patient_new') }}">Create new</a>
+    
 {% endblock %}
