@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}list patients
+{% endblock %}
+
+{% block body %}
+	<h2>Liste des patients</h2>
+
+	<table class="table" id="datatable">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Date_naissance</th>
+				<th>Telephone</th>
+				<th>Nom</th>
+				<th>Prenom</th>
+				<th>Genre</th>
+				<th>Numidentite</th>
+				<th>Adress</th>
+				<th>Mail</th>
+				<th>Etat</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for patientLigne in patients %}
+				<tr>
+					<td>{{ patientLigne.patient.id }}</td>
+					<td>{{ patientLigne.patient.dateNaissance ? patientLigne.patient.dateNaissance|date('Y-m-d') : '' }}</td>
+					<td>{{ patientLigne.patient.telephone }}</td>
+					<td>{{ patientLigne.patient.Nom }}</td>
+					<td>{{ patientLigne.patient.Prenom }}</td>
+					<td>{{ patientLigne.patient.Genre }}</td>
+					<td>{{ patientLigne.patient.Numidentite }}</td>
+					<td>{{ patientLigne.patient.Adress }}</td>
+					<td>{{ patientLigne.patient.Mail }}</td>
+					<td>{{ patientLigne.patient.EtatPatient }}</td>
+					<td>
+						<a href="{{ path('app_patient_show', {'id': patientLigne.patient.id}) }}">show</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="10">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+
+{% endblock %}

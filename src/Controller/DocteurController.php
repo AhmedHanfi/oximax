@@ -116,4 +116,23 @@ class DocteurController extends AbstractController
 
         return $this->redirectToRoute('app_docteur_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+    #[Route('/{id}/list-patients', name: 'app_list_patients_docteur', methods: ['GET'])]
+    public function listPatients(DocteurRepository $docteurRepository, $id): Response
+    {
+        $doctor = $docteurRepository->find($id);
+    
+        if (!$doctor) {
+            throw $this->createNotFoundException('Doctor not found');
+        }
+    
+        $patients = $docteurRepository->findPatientsByDoctor($doctor);
+   
+        return $this->render('docteur/list_patients.html.twig', [
+            'doctor' => $doctor,
+            'patients' => $patients,
+        ]);
+    }
+
 }
