@@ -35,5 +35,13 @@ body {
   
   label {
     font-size: 1rem !important;
-  
+  }
+
+  .tag {
+    display: inline-flex;
+    padding: .1rem .5rem;
+    margin: .2rem;
+    background-color: #ddd;
+    border: 1px solid #ddd;
+    border-radius:10px;
   }

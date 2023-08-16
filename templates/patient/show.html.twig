@@ -51,9 +51,9 @@
                 <th>Docteur</th>
                 <td>
                     {% for docteurPatientLigne in patient.docteurPatientLignes %}
-                        {{ docteurPatientLigne.Docteur.nom }}, <br>
+                        <div class="tag">{{ docteurPatientLigne.Docteur.nom }}</div> <br>
                     {% else %}
-                        No doctors assigned.
+                        Aucun médecin n'est affecté.
                     {% endfor %}
                 </td>
             </tr>
