@@ -63,8 +63,8 @@ class PatientController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // $doc = $docteurRepository->findOneBy(array('id'=>$form->get('docteurs')->getData()[0]->getId()));
-            // $patient->addDocteur($doc);
+             //$doc = $docteurRepository->findOneBy(array('id'=>$form->get('docteurs')->getData()[0]->getId()));
+             //$patient->addDocteurPatientLigne($doc);
 
             $ligDocpatient = $reoLigDocpatient->findBy([
                 'Patient' => $patient,
@@ -77,8 +77,7 @@ class PatientController extends AbstractController
             $entityManager->flush();
 
             $patientRepository->save($patient, true);
-            $selectedDoctors = $request->get('doctors', []);
-            
+            $selectedDoctors = $request->get('doctorSelect', []);
             foreach($selectedDoctors as $doctorId){
                 $doc = $docteurRepository->find($doctorId);
                 $docLig = new DocteurPatientLigne();

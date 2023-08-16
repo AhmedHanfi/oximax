@@ -3,11 +3,39 @@
     {{ form_widget(form) }}
 
     <label for="doctorSelect">Docteur(s) assigné(s)</label>
-    <select class="form-control" id="doctorSelect" name="doctorSelect" multiple>
+    <select class="form-control" id="doctorSelect" name="doctorSelect[]" multiple>
         {% for doctor in docteurs %}
             <option value="{{ doctor.id }}">{{ doctor.nom }}</option>
         {% endfor %}
     </select>
+<script>
+    const selectElement = document.getElementById('doctorSelect');
+    let selectedOptions = Array.from(selectElement.options)
+        .filter(option => option.selected)
+        .map(option => option.value);
+
+    selectElement.addEventListener('mousedown', function(event) {
+        event.preventDefault();
+        const clickedOption = event.target;
+
+        if (!event.shiftKey && !event.ctrlKey && !event.metaKey) {
+            selectedOptions = [];
+        }
+
+        clickedOption.selected = !clickedOption.selected;
+
+        if (clickedOption.selected) {
+            selectedOptions.push(clickedOption.value);
+        } else {
+            selectedOptions = selectedOptions.filter(value => value !== clickedOption.value);
+        }
+    });
+
+    selectElement.addEventListener('mouseup', function(event) {
+        event.preventDefault();
+        selectElement.blur();
+    });
+</script>
 
     <button class="btn btn-success">{{ button_label|default('Enregister') }}</button>
 
