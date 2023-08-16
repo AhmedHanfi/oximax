@@ -2,11 +2,38 @@
 
 /* @import "~bootstrap/scss/bootstrap"; */
 
+@import "customCss.css";
+
+
 body {
     background-color: white;
     margin: 0;
     height: 100%;
     width: 100%;
-}
-
-@import "customCss.css";
+  }
+  
+  p, label, a, input, button {
+    font-size: 1rem;
+  }
+  
+  .body-content {
+    padding: 0 1rem;
+  }
+  
+  .navbar {
+    background-color: #6bbfc5;
+    color: black;
+  }
+  
+  .navbar-nav {
+    color: black;
+  }
+  
+  #datatable, #datatable_wrapper, .datatable_wrapper, .table {
+    width: 100% !important;
+  }
+  
+  label {
+    font-size: 1rem !important;
+  
+  }
