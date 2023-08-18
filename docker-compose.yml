@@ -8,7 +8,6 @@ services:
       - ./docker/apache/default.conf:/etc/apache2/sites-available/000-default.conf
       - ./:/var/www/html:cached
       - var:/var/www/html/var
-      - logs:/var/www/html/var/log
       - vendor:/var/www/html/vendor
       - ./public/build:/var/www/html/public/build  # Mount the Webpack build output
 
@@ -46,5 +45,3 @@ volumes:
   db-data:
   var:  # Define the "var" volume
   vendor:  # Define the "vendor" volume
-  logs:  # Define the "logs" volume
-
