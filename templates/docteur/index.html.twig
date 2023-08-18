@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Docteur index</h1>
-    <div class="container">
+    <div class="">
         <table class="table" id="datatable" >
             <thead>
                 <tr>
@@ -31,8 +31,8 @@
                     <td>{{ docteur.adress }}</td>
                     <td>{{ docteur.cabinet }}</td>
                     <td>
-                        <a href="{{ path('app_docteur_show', {'id': docteur.id}) }}">show</a>
-                        <a href="{{ path('app_docteur_edit', {'id': docteur.id}) }}">edit</a>
+                        <a class="btn btn-outline-primary" href="{{ path('app_docteur_show', {'id': docteur.id}) }}">Details</a>
+                        <a class="btn btn-outline-success" href="{{ path('app_docteur_edit', {'id': docteur.id}) }}">Editer</a>
                     </td>
                 </tr>
             {% else %}
@@ -44,5 +44,5 @@
         </table>
     </div>
 
-    <a href="{{ path('app_docteur_new') }}">Create new</a>
+    <a class="btn btn-primary" href="{{ path('app_docteur_new') }}">Create new</a>
 {% endblock %}

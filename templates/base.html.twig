@@ -13,30 +13,96 @@
 			{{ encore_entry_link_tags('app') }}
 		{% endblock %}
 		{% block costumStylesheets %}
-			
+			<style>
+				.dropdown-menu.show {
+					position: absolute;
+					top: 60px;
+				}
+
+				.dropdown-toggle {
+					color: black;
+					margin-right: .5rem;
+					&:hover {
+					 color: #555 !important;
+				 }
+				}
+
+				.dropdown-menu > ul {
+					list-style: none;
+				}
+
+				.dropdown-menu > ul > li {
+					margin-left: -1rem;
+					color: black;
+
+				}
+
+				.dropdown-menu > ul > li > a {
+					text-decoration: none;
+					color: black;
+
+					&:hover {
+						color: #999;
+					  }
+				}
+			</style>
 		{% endblock %}
 
 		{% block javascripts %}
 			{{ encore_entry_script_tags('app') }}
+
+			<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
 		{% endblock %}
 	</head>
 	<body>
 
 		{% block navBar %}
 			<nav class="navbar d-flex px-3">
-				<a class="navbar-brand" href="/">OxyMax</a>
+				<a class="navbar-brand" href="/">
+					<img height="35" style="mix-blend-mode: difference;" src="{{ asset('build/images/logo.webp') }}" alt="Doctor Image">
+
+				</a>
 				<ul class="navbar-nav flex-row">
 					{% if app.user %}
-						<li class="nav-item p-2 mr-auto">
-							<a class="nav-link" href="{{ path('index') }}">Actions</a>
+						<li class="nav-item p-2 mr-auto row d-flex align-items-center">
+
+							<div class="dropdown">
+								<li class="nav-item dropdown-toggle my-auto" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Gérer
+								</li>
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									{% if is_granted('ROLE_ADMIN') %}
+										<ul>
+											<li><a href="{{ path('app_user_index') }}">Admins</a> </li>
+											<li><a href="{{ path('app_responsable_index') }}">Responsables</a> </li>
+											<li><a href="{{ path('app_acceuil_index') }}">Accueils</a> </li>
+											<li><a href="{{ path('app_docteur_index') }}">Docteurs</a> </li>
+											<li><a href="{{ path('app_patient_index') }}">Patients</a> </li>
+
+										</ul>
+									{% endif %}
+									{% if is_granted('ROLE_RESPONSABLE') %}
+										{% include 'responsable/page_responsable.html.twig' %}
+									{% endif %}
+									{% if is_granted('ROLE_DOCTOR') %}
+										{% include 'docteur/page_docteur.html.twig' %}
+									{% endif %}
+									{% if is_granted('ROLE_ACCEUIL') %}
+										{% include 'acceuil/page_acceuil.html.twig' %}
+									{% endif %}
+								</div>
+							</div>
 						</li>
-						
+
 						<li class="nav-item p-2 mr-0 ml-auto">
-							<a class="nav-link" href="{{ path('app_logout') }}">LogOut</a>
+							<a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
 						</li>
 						{% else %}
 							<li class="nav-item mr-0 ml-auto">
-								<a class="nav-link" href="{{ path('app_login') }}">LogIn</a>
+								<a class="nav-link" href="{{ path('app_login') }}">Se connecter</a>
 							</li>
 					{% endif %}
 				</ul>
@@ -76,8 +142,9 @@
 
 				{% if is_granted('ROLE_ADMIN') %}
 					<ul>
-						<li><a href="{{ path('app_user_index') }}">Gérer Admins</a> </li>
-						<li><a href="{{ path('app_responsable_index') }}">Gérer Responsables</a> </li>
+						<li><a href="{{ path('app_user_index') }}">Gérer admins</a> </li>
+						<li><a href="{{ path('app_responsable_index') }}">Gérer responsables</a> </li>
+						<li><a href="{{ path('app_acceuil_index') }}">Gérer Accueils</a> </li>
 						<li><a href="{{ path('app_docteur_index') }}">Gérer docteurs</a> </li>
 						<li><a href="{{ path('app_patient_index') }}">Gérer patients</a> </li>
 
@@ -110,7 +177,13 @@
 			$(document).ready(function() {
 				$('#datatable').DataTable({
 					dom: 'Bfrtip',
-					buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+					buttons: [
+						{ extend: 'copy', className: 'btn btn-primary' },
+						{ extend: 'csv', className: 'btn btn-success' },
+						{ extend: 'excel', className: 'btn btn-warning' },
+						{ extend: 'pdf', className: 'btn btn-danger' },
+						{ extend: 'print', className: 'btn btn-outline-primary' }
+					],
 					scrollX: true,
 					columnDefs: [
 						{ targets: '_all', width: 'auto' } // Set a fixed width for all columns
