@@ -57,7 +57,9 @@ class DiagnosticController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $diagnosticRepository->save($diagnostic, true);
 
-            return $this->redirectToRoute('app_diagnostic_index', [], Response::HTTP_SEE_OTHER);
+            //return $this->redirectToRoute('app_diagnostic_index', [], Response::HTTP_SEE_OTHER);
+            $this->addFlash('success', 'Diagnostic updated successfully.');
+            return $this->redirectToRoute('app_diagnostic_edit', ['id' => $diagnostic->getId()]);
         }
 
         return $this->renderForm('diagnostic/edit.html.twig', [

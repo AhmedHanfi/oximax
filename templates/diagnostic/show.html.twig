@@ -24,8 +24,12 @@
                 <td>{{ diagnostic.prescription }}</td>
             </tr>
             <tr>
+                <th>Etat</th>
+                <td>{{ diagnostic.etat }}</td>
+            </tr>
+            <tr>
                 <th>Patient</th>
-                <td>{{ diagnostic.patient?diagnostic.patient.id:'N/A' }}</td>
+                <td>{{ diagnostic.patient?(diagnostic.patient.prenom ~ ' ' ~ diagnostic.patient.nom ~ ' (' ~ diagnostic.patient.mail ~ ')'):'N/A' }}</td>
             </tr>
         </tbody>
     </table>

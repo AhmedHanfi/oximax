@@ -115,6 +115,13 @@
 
 		<div class="body-content">
 
+			{% for label, messages in app.session.flashbag.all() %}
+				{% for message in messages %}
+					<div class="mt-2 alert alert-{{ label }}">
+						{{ message|trans }}
+					</div>
+				{% endfor %}
+			{% endfor %}
 			{# {% if app.user %}
 				<h3>Welcome, {{ app.user.username }}!</h3>
 

@@ -7,12 +7,7 @@
 
     {{ include('diagnostic/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <button type="button" class="btn btn-outline-warning" onclick="goBack()">Retour</button>
-    <script>
-        function goBack() {
-            window.history.back();
-        }
-    </script>
+    <a class="btn btn-outline-warning" href="{{ path('app_list_patients_docteur', {'id':app.user.docteur.id }) }}">Retour</a>
 
     {{ include('diagnostic/_delete_form.html.twig') }}
 {% endblock %}
