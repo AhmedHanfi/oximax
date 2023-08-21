@@ -16,8 +16,8 @@
                 <th>Numidentite</th>
                 <th>Adress</th>
                 <th>Mail</th>
-                <th>Etat</th>
                 <th>Docteur affecter</th>
+                <th>Etat</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -33,7 +33,6 @@
                 <td>{{ patient.Numidentite }}</td>
                 <td>{{ patient.Adress }}</td>
                 <td>{{ patient.Mail }}</td>
-                <td>{{ patient.EtatPatient }}</td>
                 <td>
                     {% for docteurPatientLigne in patient.docteurPatientLignes %}
                         <div class="tag">{{ docteurPatientLigne.Docteur.nom }}</div> <br>
@@ -41,6 +40,7 @@
                         Aucun médecin n'est affecté.
                     {% endfor %}
                 </td>
+
                 <td>
                     <a class="btn btn-outline-primary" href="{{ path('app_patient_show', {'id': patient.id}) }}">Details</a>
                     <a class="btn btn-outline-success" href="{{ path('app_patient_edit', {'id': patient.id}) }}">Editer</a>

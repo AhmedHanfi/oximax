@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Diagnostic{% endblock %}
+
+{% block body %}
+    <h1>Edit Diagnostic</h1>
+
+    {{ include('diagnostic/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <button type="button" class="btn btn-outline-warning" onclick="goBack()">Retour</button>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+    {{ include('diagnostic/_delete_form.html.twig') }}
+{% endblock %}

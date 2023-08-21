@@ -44,10 +44,6 @@
                 <td>{{ patient.Mail }}</td>
             </tr>
             <tr>
-                <th>Etat</th>
-                <td>{{ patient.EtatPatient }}</td>
-            </tr>
-            <tr>
                 <th>Docteur</th>
                 <td>
                     {% for docteurPatientLigne in patient.docteurPatientLignes %}
@@ -57,11 +53,25 @@
                     {% endfor %}
                 </td>
             </tr>
+            <tr>
+                <th>Etat</th>
+                <td>
+                    {% for diag in patient.Diagnostics %}
+                        <a href="{{ path('app_diagnostic_show', {'id': diag.id }) }}" class="btn btn-sm {{ diag.etat=='amélioration'?'btn-success':'btn-danger' }} m-1">{{ diag.etat }}</a>
+                    {% endfor %}
+                </td>
+            </tr>
              
         </tbody>
     </table>
 
-    <a class="btn btn-outline-warning" href="{{ path('app_patient_index') }}">Retour</a>
+
+    <button type="button" class="btn btn-outline-warning" onclick="goBack()">Retour</button>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 
     <a class="btn btn-outline-success" href="{{ path('app_patient_edit', {'id': patient.id}) }}">Editer</a>
 

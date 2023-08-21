@@ -2,13 +2,16 @@
 
 namespace App\Form;
 
+use App\Entity\Diagnostic;
 use App\Entity\Docteur;
 use App\Entity\Patient;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -71,12 +74,6 @@ class PatientType extends AbstractType
                     'class' => 'form-control mb-2',
                 ],
             ])
-            ->add('etat_patient', TextareaType::class, [
-                'attr' => [
-                    'class' => 'form-control mb-2',
-                ],
-            ])
-            
         ;
     }
 

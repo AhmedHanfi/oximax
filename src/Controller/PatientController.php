@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Docteur;
 use App\Entity\Patient;
+use App\Entity\Diagnostic;
 use App\Entity\DocteurPatientLigne;
+use App\Form\DiagnosticType;
 use App\Form\PatientType;
+use App\Repository\DiagnosticRepository;
 use App\Repository\DocteurRepository;
 use App\Repository\PatientRepository;
 use App\Repository\DocteurPatientLigneRepository;
@@ -107,4 +109,32 @@ class PatientController extends AbstractController
 
         return $this->redirectToRoute('app_patient_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{patientId}/add-diagnostic', name: 'app_add_diagnostic', methods: ['POST'])]
+    public function addDiagnostic(Request $request, DiagnosticRepository $diagnosticRepository, PatientRepository $patientRepository, $patientId): Response
+    {
+        $patient = $patientRepository->find($patientId);
+
+        if (!$patient) {
+            throw $this->createNotFoundException('Patient not found');
+        }
+
+        $diagnostic = new Diagnostic();
+        $diagnostic->setPatient($patient);
+
+        $form = $this->createForm(DiagnosticType::class, $diagnostic);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Persist the diagnostic
+            $diagnosticRepository->save($diagnostic, true);
+
+            return $this->json(['message' => 'Diagnostic added successfully'], Response::HTTP_OK);
+        }
+
+        return $this->json(['message' => 'Invalid data'], Response::HTTP_BAD_REQUEST);
+
+    }
+
+
 }

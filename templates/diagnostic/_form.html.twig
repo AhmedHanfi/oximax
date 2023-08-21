@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+    {{ form_row(form.maladie) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.prescription) }}
+	{% for choice in form.etat %}
+        <div class="form-check">
+            {{ form_widget(choice, {'label_attr': {'class': 'form-check-input'}, 'attr': {'class': 'form-check-input', 'type': 'radio'}}) }}
+            {{ form_label(choice, null, {'label_attr': {'class': 'form-check-label'}}) }}
+        </div>
+    {% endfor %}
+    <button class="btn btn-success">{{ button_label|default('Enregister') }}</button>
+{{ form_end(form) }}

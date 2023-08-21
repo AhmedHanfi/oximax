@@ -45,6 +45,10 @@
 						color: #999;
 					  }
 				}
+
+				.dataTables_filter input {
+					border-radius: 5px !important;
+				}
 			</style>
 		{% endblock %}
 
@@ -71,16 +75,16 @@
 
 							<div class="dropdown">
 								<li class="nav-item dropdown-toggle my-auto" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Gérer
+									Actions
 								</li>
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 									{% if is_granted('ROLE_ADMIN') %}
 										<ul>
-											<li><a href="{{ path('app_user_index') }}">Admins</a> </li>
-											<li><a href="{{ path('app_responsable_index') }}">Responsables</a> </li>
-											<li><a href="{{ path('app_acceuil_index') }}">Accueils</a> </li>
-											<li><a href="{{ path('app_docteur_index') }}">Docteurs</a> </li>
-											<li><a href="{{ path('app_patient_index') }}">Patients</a> </li>
+											<li><a href="{{ path('app_user_index') }}">Gérer admins</a> </li>
+											<li><a href="{{ path('app_responsable_index') }}">Gérer responsables</a> </li>
+											<li><a href="{{ path('app_acceuil_index') }}">Gérer Accueils</a> </li>
+											<li><a href="{{ path('app_docteur_index') }}">Gérer docteurs</a> </li>
+											<li><a href="{{ path('app_patient_index') }}">Gérer patients</a> </li>
 
 										</ul>
 									{% endif %}
@@ -178,16 +182,26 @@
 				$('#datatable').DataTable({
 					dom: 'Bfrtip',
 					buttons: [
-						{ extend: 'copy', className: 'btn btn-primary' },
-						{ extend: 'csv', className: 'btn btn-success' },
-						{ extend: 'excel', className: 'btn btn-warning' },
-						{ extend: 'pdf', className: 'btn btn-danger' },
-						{ extend: 'print', className: 'btn btn-outline-primary' }
+						{ extend: 'copy', text: 'Copier', className: 'btn btn-primary' },
+						{ extend: 'csv', text: 'CSV', className: 'btn btn-success' },
+						{ extend: 'excel', text: 'Excel', className: 'btn btn-warning' },
+						{ extend: 'pdf', text: 'PDF', className: 'btn btn-danger' },
+						{ extend: 'print', text: 'Imprimer', className: 'btn btn-outline-primary' }
 					],
 					scrollX: true,
 					columnDefs: [
 						{ targets: '_all', width: 'auto' } // Set a fixed width for all columns
 					],
+					language: {
+						search: "Recherche", // Change the search input text
+						buttons: {
+							copyTitle: 'Copier dans le presse-papiers',
+							copySuccess: {
+								_: '%d lignes copiées',
+								1: '1 ligne copiée'
+							}
+						}
+					},
 					initComplete: function() {
 					this.api().columns()
 					},

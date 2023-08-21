@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Diagnostic;
 use App\Entity\Docteur;
 use App\Entity\User;
+use App\Form\DiagnosticType;
 use App\Form\DocteurType;
 use App\Repository\DocteurRepository;
 use App\Repository\UserRepository;
@@ -122,16 +124,19 @@ class DocteurController extends AbstractController
     public function listPatients(DocteurRepository $docteurRepository, $id): Response
     {
         $doctor = $docteurRepository->find($id);
-    
+
         if (!$doctor) {
             throw $this->createNotFoundException('Doctor not found');
         }
-    
+
+        $form = $this->createForm(DiagnosticType::class);
+
         $patients = $docteurRepository->findPatientsByDoctor($doctor);
-   
+
         return $this->render('docteur/list_patients.html.twig', [
             'doctor' => $doctor,
             'patients' => $patients,
+            'diagnosticForm' => $form->createView(),
         ]);
     }
 

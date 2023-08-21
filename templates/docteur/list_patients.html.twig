@@ -35,18 +35,112 @@
 					<td>{{ patientLigne.patient.Numidentite }}</td>
 					<td>{{ patientLigne.patient.Adress }}</td>
 					<td>{{ patientLigne.patient.Mail }}</td>
-					<td>{{ patientLigne.patient.EtatPatient }}</td>
 					<td>
-						<a href="{{ path('app_patient_show', {'id': patientLigne.patient.id}) }}">Details</a>
+						{# ToDo
+							Ajout lien cliquable sur Etat pour voir les details
+						#}
+						{% for diag in patientLigne.patient.Diagnostics %}
+							<a href="{{ path('app_diagnostic_show', {'id': diag.id }) }}" class="btn btn-sm {{ diag.etat=='amélioration'?'btn-success':'btn-danger' }} m-1">{{ diag.etat }}</a>
+						{% endfor %}
+						<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addDiagnosticModal" onclick="getPatientId('{{ patientLigne.patient.id }}')">
+							+
+						</button>
+
+					</td>
+					<td>
+						<a class="btn btn-outline-primary" href="{{ path('app_patient_show', {'id': patientLigne.patient.id}) }}">Details</a>
 					</td>
 				</tr>
 			{% else %}
 				<tr>
-					<td colspan="10">no records found</td>
+					<td colspan="10">Aucun patient trouvé</td>
 				</tr>
 			{% endfor %}
 		</tbody>
 	</table>
+
+
+	<div class="modal fade" id="addDiagnosticModal" tabindex="-1" aria-labelledby="addDiagnosticModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="addDiagnosticModalLabel">Ajout Diagnostic</h5>
+					<button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					{{ form_start(diagnosticForm) }}
+
+					{{ form_row(diagnosticForm.maladie) }}
+					{{ form_row(diagnosticForm.description) }}
+					{{ form_row(diagnosticForm.prescription) }}
+
+					{% for choice in diagnosticForm.etat %}
+						<div class="form-check">
+							{{ form_widget(choice, {'label_attr': {'class': 'form-check-input'}, 'attr': {'class': 'form-check-input', 'type': 'radio'}}) }}
+							{{ form_label(choice, null, {'label_attr': {'class': 'form-check-label'}}) }}
+						</div>
+					{% endfor %}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+					<button class="btn btn-primary">{{ button_label|default('Ajout diagnostic') }}</button>
+					{{ form_end(diagnosticForm) }}
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+	<script>
+		var patientId = null; // Initialize patientId
+
+		function getPatientId(newPatientId) {
+			// Update the patientId variable with the new value
+			patientId = newPatientId;
+			console.log('Patient ID:', patientId);
+		}
+
+		$(document).ready(function () {
+			$('#addDiagnosticModal form').submit(function (event) {
+				event.preventDefault();
+
+				var form = $(this);
+				var url = '{{ path('app_add_diagnostic', {'patientId': 'patientIdPlaceholder'}) }}';
+				var formData = form.serialize();
+
+				// Replace the placeholder with the actual patient ID
+				// to avoid errors on loading page when no patientId is defined
+				url = url.replace('patientIdPlaceholder', patientId);
+
+				$.ajax({
+					type: 'POST',
+					url: url,
+					data: formData,
+					success: function (data) {
+						$('#addDiagnosticModal').modal('hide');
+						document.getElementById('addDiagnosticModal').style.display = 'none';
+						document.getElementById('addDiagnosticModal').classList.remove('show');
+						document.getElementById('addDiagnosticModal').classList.add('hide');
+						document.querySelector('.modal-backdrop').classList.remove('show');
+
+						alert('Diagnostic ajouté avec succès');
+
+						location.reload();
+					},
+					error: function (data) {
+						console.log(data)
+						// Handle errors
+					}
+				});
+			});
+		});
+	</script>
+
+
 
 
 {% endblock %}

@@ -43,12 +43,16 @@ class Patient
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $etat_patient = null;
 
-    #[ORM\OneToMany(mappedBy: 'Patient', targetEntity: DocteurPatientLigne::class)]
+    #[ORM\OneToMany(mappedBy: 'Patient', targetEntity: DocteurPatientLigne::class, cascade: ["persist"])]
     private Collection $docteurPatientLignes;
+
+    #[ORM\OneToMany(mappedBy: 'patient', targetEntity: Diagnostic::class, cascade: ["persist"])]
+    private Collection $diagnostics;
 
     public function __construct()
     {
         $this->docteurPatientLignes = new ArrayCollection();
+        $this->diagnostics = new ArrayCollection();
     }
 
 
@@ -195,5 +199,34 @@ class Patient
         return $this;
     }
 
+    /**
+     * @return Collection<int, Diagnostic>
+     */
+    public function getDiagnostics(): Collection
+    {
+        return $this->diagnostics;
+    }
 
+    public function addDiagnostic(Diagnostic $diagnostic): self
+    {
+        if (!$this->diagnostics->contains($diagnostic)) {
+            $this->diagnostics->add($diagnostic);
+            $diagnostic->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDiagnostic(Diagnostic $diagnostic): self
+    {
+        if ($this->diagnostics->removeElement($diagnostic)) {
+            // set the owning side to null (unless already changed)
+            if ($diagnostic->getPatient() === $this) {
+                $diagnostic->setPatient(null);
+            }
+        }
+
+        return $this;
+    }
+    
 }
