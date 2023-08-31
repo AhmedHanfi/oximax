@@ -46,6 +46,37 @@
 					  }
 				}
 
+				.list-action > ul > {
+					display: flex;
+				}
+				.list-action > ul > li {
+					list-style: none;
+					margin-left: -1rem;
+					width: fit-content;
+					display: inline-flex;
+
+				}
+				.list-action > ul > li > a {
+					text-decoration: none;
+					background-color: #0a53be;
+					color: white;
+					padding: .3rem .5rem;
+					margin: .5rem;
+					display: flex;
+					width: fit-content;
+					border-radius: 5px;
+				}
+				.list-action > ul > li > a:hover {
+					text-decoration: none;
+					background-color: #0d6efd;
+					color: white;
+					padding: .3rem .5rem;
+					margin: .5rem;
+					display: flex;
+					width: fit-content;
+					border-radius: 5px;
+				}
+
 				.dataTables_filter input {
 					border-radius: 5px !important;
 				}
@@ -122,56 +153,105 @@
 					</div>
 				{% endfor %}
 			{% endfor %}
-			{# {% if app.user %}
-				<h3>Welcome, {{ app.user.username }}!</h3>
 
-				{% if app.user.getDocteur %}
-					<table class="table">
-						<thead>
+				
+			{% block body %}
+				{% if app.user %}
+					<h3>Bienvenue, {{ app.user.username }}!</h3>
+
+					{% if app.user.getDocteur %}
+						<table class="table">
+							<thead>
 							<tr>
-							<th scope="col">Nom</th>
-							<th scope="col">Prenom</th>
-							<th scope="col">mail</th>
-							<th scope="col">Role</th>
+								<th scope="col">Nom</th>
+								<th scope="col">Prenom</th>
+								<th scope="col">mail</th>
+								<th scope="col">Role</th>
 							</tr>
-						</thead>
-						<tbody>
+							</thead>
+							<tbody>
 							<tr>
 								<td>{{ app.user.getDocteur.prenom }}</td>
 								<td>{{ app.user.getDocteur.nom }}</td>
 								<td>{{ app.user.getDocteur.mail }}</td>
-								<td>{{ app.user.roles[0] }}</td>
+								<td>Docteur</td>
 							</tr>
-						</tbody>
-					</table>
-				{% endif %}
+							</tbody>
+						</table>
+					{% endif %}
+
+					{% if app.user.getResponsable %}
+						<table class="table">
+							<thead>
+							<tr>
+								<th scope="col">Nom</th>
+								<th scope="col">Prenom</th>
+								<th scope="col">mail</th>
+								<th scope="col">Role</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td>{{ app.user.getResponsable.prenom }}</td>
+								<td>{{ app.user.getResponsable.nom }}</td>
+								<td>{{ app.user.getResponsable.mail }}</td>
+								<td>Responsable</td>
+							</tr>
+							</tbody>
+						</table>
+					{% endif %}
+
+					{% if app.user.getAcceuil %}
+						<table class="table">
+							<thead>
+							<tr>
+								<th scope="col">Nom</th>
+								<th scope="col">Prenom</th>
+								<th scope="col">mail</th>
+								<th scope="col">Role</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td>{{ app.user.getAcceuil.prenom }}</td>
+								<td>{{ app.user.getAcceuil.nom }}</td>
+								<td>{{ app.user.getAcceuil.mail }}</td>
+								<td>Acceuil</td>
+							</tr>
+							</tbody>
+						</table>
+					{% endif %}
 
 
-			{% endif %} #}
-				
-			{% block body %}
-
-				{% if is_granted('ROLE_ADMIN') %}
-					<ul>
-						<li><a href="{{ path('app_user_index') }}">Gérer admins</a> </li>
-						<li><a href="{{ path('app_responsable_index') }}">Gérer responsables</a> </li>
-						<li><a href="{{ path('app_acceuil_index') }}">Gérer Accueils</a> </li>
-						<li><a href="{{ path('app_docteur_index') }}">Gérer docteurs</a> </li>
-						<li><a href="{{ path('app_patient_index') }}">Gérer patients</a> </li>
-
-					</ul>
-				{% endif %}
-				{% if is_granted('ROLE_RESPONSABLE') %}
-					{% include 'responsable/page_responsable.html.twig' %}	
-				{% endif %}
-				{% if is_granted('ROLE_DOCTOR') %}
-					{% include 'docteur/page_docteur.html.twig' %}	
-				{% endif %}
-				{% if is_granted('ROLE_ACCEUIL') %}
-					{% include 'acceuil/page_acceuil.html.twig' %}	
 				{% endif %}
 
-				
+				<h3>Actions</h3>
+				<div class="list-action">
+					{% if is_granted('ROLE_ADMIN') %}
+						<ul>
+							<li><a href="{{ path('app_user_index') }}">Gérer admins</a> </li>
+							<li><a href="{{ path('app_responsable_index') }}">Gérer responsables</a> </li>
+							<li><a href="{{ path('app_acceuil_index') }}">Gérer Accueils</a> </li>
+							<li><a href="{{ path('app_docteur_index') }}">Gérer docteurs</a> </li>
+							<li><a href="{{ path('app_patient_index') }}">Gérer patients</a> </li>
+
+						</ul>
+					{% endif %}
+					{% if is_granted('ROLE_RESPONSABLE') %}
+						{% include 'responsable/page_responsable.html.twig' %}
+					{% endif %}
+					{% if is_granted('ROLE_DOCTOR') %}
+						{% include 'docteur/page_docteur.html.twig' %}
+					{% endif %}
+					{% if is_granted('ROLE_ACCEUIL') %}
+						{% include 'acceuil/page_acceuil.html.twig' %}
+					{% endif %}
+				</div>
+
+
+				{% include 'chart.html.twig' %}
+
+
 			{% endblock %}
 		</div>
 		

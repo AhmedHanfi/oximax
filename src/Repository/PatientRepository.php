@@ -2,7 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Acceuil;
+use App\Entity\Docteur;
 use App\Entity\Patient;
+use App\Entity\Responsable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +40,33 @@ class PatientRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getTotalCounts(): array
+    {
+        $totalPatients = $this->count([]);
+
+        $em = $this->getEntityManager();
+        $docteurCount = $em->getRepository(Docteur::class)->count([]);
+        $responsableCount = $em->getRepository(Responsable::class)->count([]);
+        $acceuilCount = $em->getRepository(Acceuil::class)->count([]);
+
+        $malePatientCount = $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->where('p.Genre = :male')
+            ->setParameter('male', 'Mr')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $femalePatientCount = $totalPatients - $malePatientCount;
+        return [
+            'totalAcceuils' => $acceuilCount,
+            'totalPatients' => $totalPatients,
+            'totalDoctors' => $docteurCount,
+            'totalResponsables' => $responsableCount,
+            'malePatientCount' => $malePatientCount,
+            'femalePatientCount' => $femalePatientCount,
+        ];
     }
 
 //    /**
