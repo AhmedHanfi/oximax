@@ -148,7 +148,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     
     public function getResponsable(): ?Responsable
     {
-        return $this->acceuil;
+        return $this->responsable;
     }
 
     public function setResponsable(?Responsable $responsable): self
