@@ -19,7 +19,7 @@
 				<th>Numidentite</th>
 				<th>Adress</th>
 				<th>Mail</th>
-				<th>Etat</th>
+				<th>Maladie(s) <small class="text-secondary">(Etat:<span class="px-2 mx-1 rounded bg-success"></span>"amélioration"/<span class="px-2 mx-1 rounded bg-danger"></span>"déterioration")</small></th>
 				<th>actions</th>
 			</tr>
 		</thead>
@@ -36,16 +36,12 @@
 					<td>{{ patientLigne.patient.Adress }}</td>
 					<td>{{ patientLigne.patient.Mail }}</td>
 					<td>
-						{# ToDo
-							Ajout lien cliquable sur Etat pour voir les details
-						#}
 						{% for diag in patientLigne.patient.Diagnostics %}
-							<a href="{{ path('app_diagnostic_show', {'id': diag.id }) }}" class="btn btn-sm {{ diag.etat=='amélioration'?'btn-success':'btn-danger' }} m-1">{{ diag.etat }}</a>
+							<a href="{{ path('app_diagnostic_show', {'id': diag.id }) }}" class="btn btn-sm {{ diag.etat=='amélioration'?'btn-success':'btn-danger' }} m-1">{{ diag.maladie }}</a>
 						{% endfor %}
 						<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addDiagnosticModal" onclick="getPatientId('{{ patientLigne.patient.id }}')">
 							+
 						</button>
-
 					</td>
 					<td>
 						<a class="btn btn-outline-primary" href="{{ path('app_patient_show', {'id': patientLigne.patient.id}) }}">Details</a>

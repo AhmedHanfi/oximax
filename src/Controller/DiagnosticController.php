@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Diagnostic;
+use App\Entity\HistoriqueDiagnostic;
 use App\Form\DiagnosticType;
 use App\Repository\DiagnosticRepository;
+use App\Repository\HistoriqueDiagnosticRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,6 +31,8 @@ class DiagnosticController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $diagnostic->setDateCreaction(new \DateTime());
+
             $diagnosticRepository->save($diagnostic, true);
 
             return $this->redirectToRoute('app_diagnostic_index', [], Response::HTTP_SEE_OTHER);
@@ -49,15 +53,31 @@ class DiagnosticController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_diagnostic_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Diagnostic $diagnostic, DiagnosticRepository $diagnosticRepository): Response
+    public function edit(Request $request, Diagnostic $diagnostic, DiagnosticRepository $diagnosticRepository, HistoriqueDiagnosticRepository $historiqueDiagnosticRepository): Response
     {
+        // Preserve old value
+        $oldDiagnostic = clone $diagnostic;
+
         $form = $this->createForm(DiagnosticType::class, $diagnostic);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Create a new HistoriqueDiagnostic entity
+            $historiqueDiagnostic = new HistoriqueDiagnostic();
+            $historiqueDiagnostic->setDiagnostic($diagnostic);
+            $historiqueDiagnostic->setDateEdit(new \DateTime());
+            $historiqueDiagnostic->setMaladie($oldDiagnostic->getMaladie());
+            $historiqueDiagnostic->setDescription($oldDiagnostic->getDescription());
+            $historiqueDiagnostic->setPrescription($oldDiagnostic->getPrescription());
+            $historiqueDiagnostic->setEtat($oldDiagnostic->getEtat());
+
+            // Save the new HistoriqueDiagnostic entity
+            $historiqueDiagnosticRepository->save($historiqueDiagnostic, true);
+
+            // Update and save the edited Diagnostic entity
             $diagnosticRepository->save($diagnostic, true);
 
-            //return $this->redirectToRoute('app_diagnostic_index', [], Response::HTTP_SEE_OTHER);
+            // Handle flash message and redirection
             $this->addFlash('success', 'Diagnostic updated successfully.');
             return $this->redirectToRoute('app_diagnostic_edit', ['id' => $diagnostic->getId()]);
         }

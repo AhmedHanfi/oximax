@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\DiagnosticRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DiagnosticRepository::class)]
@@ -27,6 +30,17 @@ class Diagnostic
 
     #[ORM\Column(length: 20)]
     private ?string $etat = null;
+
+    #[ORM\OneToMany(mappedBy: 'diagnostic', targetEntity: HistoriqueDiagnostic::class, cascade: [])]
+    private Collection $historiqueDiagnostics;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateCreaction = null;
+
+    public function __construct()
+    {
+        $this->historiqueDiagnostics = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -89,6 +103,48 @@ class Diagnostic
     public function setEtat(string $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HistoriqueDiagnostic>
+     */
+    public function getHistoriqueDiagnostics(): Collection
+    {
+        return $this->historiqueDiagnostics;
+    }
+
+    public function addHistoriqueDiagnostic(HistoriqueDiagnostic $historiqueDiagnostic): self
+    {
+        if (!$this->historiqueDiagnostics->contains($historiqueDiagnostic)) {
+            $this->historiqueDiagnostics->add($historiqueDiagnostic);
+            $historiqueDiagnostic->setDiagnostic($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistoriqueDiagnostic(HistoriqueDiagnostic $historiqueDiagnostic): self
+    {
+        if ($this->historiqueDiagnostics->removeElement($historiqueDiagnostic)) {
+            // set the owning side to null (unless already changed)
+            if ($historiqueDiagnostic->getDiagnostic() === $this) {
+                $historiqueDiagnostic->setDiagnostic(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDateCreaction(): ?\DateTimeInterface
+    {
+        return $this->dateCreaction;
+    }
+
+    public function setDateCreaction(\DateTimeInterface $dateCreaction): self
+    {
+        $this->dateCreaction = $dateCreaction;
 
         return $this;
     }

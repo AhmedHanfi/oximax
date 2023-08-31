@@ -54,10 +54,13 @@
                 </td>
             </tr>
             <tr>
-                <th>Etat</th>
+                <th>Maladie(s) <br>
+                    <small class="text-secondary">(Etat:<span class="px-2 mx-1 rounded bg-success"></span>"amélioration"/<span class="px-2 mx-1 rounded bg-danger"></span>"déterioration")</small>
+                </th>
+
                 <td>
                     {% for diag in patient.Diagnostics %}
-                        <a href="{{ path('app_diagnostic_show', {'id': diag.id }) }}" class="btn btn-sm {{ diag.etat=='amélioration'?'btn-success':'btn-danger' }} m-1">{{ diag.etat }}</a>
+                        <a href="{{ path('app_diagnostic_show', {'id': diag.id }) }}" class="btn btn-sm {{ diag.etat=='amélioration'?'btn-success':'btn-danger' }} m-1">{{ diag.maladie }}</a>
                     {% endfor %}
                 </td>
             </tr>
@@ -78,7 +81,12 @@
     {{ include('patient/_delete_form.html.twig') }}
 
             {% if is_granted('ROLE_DOCTOR') %}
-				<iframe style="width: 100%; border: 1px black solid;" frameborder='1' height='620' src="http://192.168.216.100/">
+				<iframe
+                        style="width: 100%; border: 1px black solid;"
+                        class="mt-2 rounded"
+                        height='620'
+                        src="http://192.168.216.100/"
+                >
 			{% endif %}
     <script>
     function print(){

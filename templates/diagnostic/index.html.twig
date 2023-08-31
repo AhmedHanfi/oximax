@@ -10,6 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Maladie</th>
+                <th>Date de création</th>
                 <th>Description</th>
                 <th>Prescription</th>
                 <th>Patient</th>
@@ -22,9 +23,18 @@
             <tr>
                 <td>{{ diagnostic.id }}</td>
                 <td>{{ diagnostic.maladie }}</td>
+                <td>{{ diagnostic.dateCreaction | date('d/m/Y H:i') }}</td>
                 <td>{{ diagnostic.description }}</td>
                 <td>{{ diagnostic.prescription }}</td>
-                <td>{{ diagnostic.patient?diagnostic.patient.id:'N/A' }}</td>
+                <td>
+                    {% if diagnostic.patient %}
+                        <a href="{{ path('app_patient_show', {'id': diagnostic.patient.id}) }}">
+                            {{ diagnostic.patient.nom }} ({{ diagnostic.patient.mail }})
+                        </a>
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
                 <td> <div class="badge {{ diagnostic.etat=='amélioration'?'bg-success':'bg-danger' }}">{{ diagnostic.etat }}</div></td>
                 <td>
                     <a href="{{ path('app_diagnostic_show', {'id': diagnostic.id}) }}">show</a>
