@@ -43,10 +43,10 @@ class Patient
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $etat_patient = null;
 
-    #[ORM\OneToMany(mappedBy: 'Patient', targetEntity: DocteurPatientLigne::class, cascade: ["persist"])]
+    #[ORM\OneToMany(mappedBy: 'Patient', targetEntity: DocteurPatientLigne::class, cascade: ["persist", "remove"])]
     private Collection $docteurPatientLignes;
 
-    #[ORM\OneToMany(mappedBy: 'patient', targetEntity: Diagnostic::class, cascade: ["persist"])]
+    #[ORM\OneToMany(mappedBy: 'patient', targetEntity: Diagnostic::class, cascade: ["persist", "remove"])]
     private Collection $diagnostics;
 
     public function __construct()
