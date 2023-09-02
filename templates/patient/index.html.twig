@@ -17,7 +17,11 @@
                 <th>Adress</th>
                 <th>Mail</th>
                 <th>Docteur affecter</th>
-                <th>Etat</th>
+
+                <th>Maladie(s) <br>
+                    <small class="text-secondary">(Etat:<span class="px-2 mx-1 rounded bg-success"></span>"amélioration"/<span class="px-2 mx-1 rounded bg-danger"></span>"déterioration")</small>
+                </th>
+
                 <th>actions</th>
             </tr>
         </thead>
@@ -40,6 +44,13 @@
                         Aucun médecin n'est affecté.
                     {% endfor %}
                 </td>
+
+                <td>
+                    {% for diag in patient.Diagnostics %}
+                        <a href="{{ path('app_diagnostic_show', {'id': diag.id }) }}" class="btn btn-sm {{ diag.etat=='amélioration'?'btn-success':'btn-danger' }} m-1">{{ diag.maladie }}</a>
+                    {% endfor %}
+                </td>
+
 
                 <td>
                     <a class="btn btn-outline-primary" href="{{ path('app_patient_show', {'id': patient.id}) }}">Details</a>
