@@ -1,5 +1,7 @@
-                {% block body %}
-                <ul>
-                	<li><a href="{{ path('app_patient_index') }}">Gérer Patients</a> </li>
-            	</ul>
-                {% endblock %}
+{% block body %}
+	<ul>
+		<li><a href="{{path('app_patient_index')}}">Gérer Patients</a></li>
+		<li><a href="{{path('app_docteur_index')}}">Liste docteurs</a></li>
+
+	</ul>
+{% endblock %}

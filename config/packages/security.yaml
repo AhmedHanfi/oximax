@@ -13,10 +13,10 @@ security:
     access_denied_url: /access-denied
 
     role_hierarchy:
-        ROLE_ACCEUIL: ROLE_ACCEUIL
-        ROLE_DOCTOR: ROLE_DOCTOR
-        ROLE_RESPONSABLE: ROLE_RESPONSABLE
         ROLE_ADMIN: ROLE_ADMIN
+        ROLE_RESPONSABLE: ROLE_RESPONSABLE
+        ROLE_DOCTOR: ROLE_DOCTOR
+        ROLE_ACCEUIL: ROLE_ACCEUIL
 
     firewalls:
         dev:
@@ -48,7 +48,12 @@ security:
     access_control:
         - { path: ^/user, roles: ROLE_ADMIN }
         - { path: ^/patient, roles: [IS_AUTHENTICATED_FULLY, ROLE_ACCEUIL, ROLE_RESPONSABLE, ROLE_ADMIN] }
-        - { path: ^/docteur, roles: [IS_AUTHENTICATED_FULLY, ROLE_DOCTOR, ROLE_RESPONSABLE, ROLE_ADMIN] }
+        
+        - { path: ^/docteur/new, roles: [ROLE_DOCTOR, ROLE_RESPONSABLE, ROLE_ADMIN] }
+        - { path: ^/docteur/\d+, roles: [ROLE_DOCTOR, ROLE_RESPONSABLE, ROLE_ADMIN] }
+        - { path: ^/docteur/\d+/edit, roles: [ROLE_DOCTOR, ROLE_RESPONSABLE, ROLE_ADMIN] }
+        - { path: ^/docteur, roles: [ROLE_ACCEUIL, ROLE_DOCTOR, ROLE_RESPONSABLE, ROLE_ADMIN] }
+
         - { path: ^/acceuil, roles: [ROLE_ACCEUIL, ROLE_RESPONSABLE, ROLE_ADMIN] }
         # - { path: ^/profile, roles: ROLE_USER }
 

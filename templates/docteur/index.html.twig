@@ -1,48 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Docteur index{% endblock %}
+{% block title %}Docteurs
+{% endblock %}
 
 {% block body %}
-    <h1>Docteur index</h1>
-    <div class="">
-        <table class="table" id="datatable" >
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nom</th>
-                    <th>Prenom</th>
-                    <th>Specialite</th>
-                    <th>Telephone</th>
-                    <th>Mail</th>
-                    <th>Adress</th>
-                    <th>Cabinet</th>
-                    <th>actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for docteur in docteurs %}
-                <tr>
-                    <td>{{ docteur.id }}</td>
-                    <td>{{ docteur.nom }}</td>
-                    <td>{{ docteur.prenom }}</td>
-                    <td>{{ docteur.specialite }}</td>
-                    <td>{{ docteur.telephone }}</td>
-                    <td>{{ docteur.mail }}</td>
-                    <td>{{ docteur.adress }}</td>
-                    <td>{{ docteur.cabinet }}</td>
-                    <td>
-                        <a class="btn btn-outline-primary" href="{{ path('app_docteur_show', {'id': docteur.id}) }}">Details</a>
-                        <a class="btn btn-outline-success" href="{{ path('app_docteur_edit', {'id': docteur.id}) }}">Editer</a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="9">no records found</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+	<h1>Docteurs</h1>
+	<div class="">
+		<table class="table" id="datatable">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nom</th>
+					<th>Prenom</th>
+					<th>Specialite</th>
+					<th>Telephone</th>
+					<th>Mail</th>
+					<th>Adress</th>
+					<th>Cabinet</th>
+					{% if (is_granted('ROLE_RESPONSABLE') or is_granted('ROLE_ADMIN') ) %}
+						<th>actions</th>
+					{% endif %}
+				</tr>
+			</thead>
+			<tbody>
+				{% for docteur in docteurs %}
+					<tr>
+						<td>{{ docteur.id }}</td>
+						<td>{{ docteur.nom }}</td>
+						<td>{{ docteur.prenom }}</td>
+						<td>{{ docteur.specialite }}</td>
+						<td>{{ docteur.telephone }}</td>
+						<td>{{ docteur.mail }}</td>
+						<td>{{ docteur.adress }}</td>
+						<td>{{ docteur.cabinet }}</td>
+						{% if (is_granted('ROLE_RESPONSABLE') or is_granted('ROLE_ADMIN') ) %}
+							<td>
+								<a class="btn btn-outline-primary" href="{{ path('app_docteur_show', {'id': docteur.id}) }}">Details</a>
+								<a class="btn btn-outline-success" href="{{ path('app_docteur_edit', {'id': docteur.id}) }}">Editer</a>
+							</td>
+						{% endif %}
 
-    <a class="btn btn-primary" href="{{ path('app_docteur_new') }}">Create new</a>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="9">no records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% if (is_granted('ROLE_RESPONSABLE') or is_granted('ROLE_ADMIN') ) %}
+		<a class="btn btn-primary" href="{{ path('app_docteur_new') }}">Create new</a>
+	{% endif %}
+
 {% endblock %}
